@@ -380,11 +380,28 @@
       "websocket": {
         // * enabled:
         //    Set to true to enable WebSocket support
+        // * idleTimeout:
+        //    The maximum time (in milliseconds) without sending or receiving a
+        //    message from a client. Once reached, the client's socket is
+        //    forcibly closed.
+        //    Contrary to heartbeats (see below), this is a passive check,
+        //    forcing all clients to actively send messages to maintain their
+        //    connection active.
+        //    Set the value to 0 to disable this feature (should only be
+        //    activated if heartbeat is disabled)
         // * heartbeat:
         //    The time, in milliseconds, between the server's PING requests.
-        //    Setting this value to 0 disables PING/PONG requests entirely.
+        //    Setting this value to 0 disables PING requests from the server
+        //    (it will still respond with a PONG to PING requests from clients).
+        //    If heartbeat is deactivated, then setting a non-zero value to
+        //    idleTimeout is strongly recommended to prevent dead sockets
+        //    to linger forever.
+        // * compression:
+        //    Enable messages compression.
         "enabled": true,
-        "heartbeat": 60000
+        "idleTimeout": 0,
+        "heartbeat": 60000,
+        "compression": false
       }
     }
   },
